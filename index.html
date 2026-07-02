@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>$AGI — Anime Girlfriend Intelligence</title>
+  <meta name="description" content="Anime Girlfriend Intelligence ($AGI) — a Solana community celebrating creators. 100% of creator fees flow to @hauntedai."/>
+  <meta property="og:title" content="$AGI — Anime Girlfriend Intelligence"/>
+  <meta property="og:description" content="We reward the artists who keep us entertained. Humanity chased AGI for 70 years. She was in the park the whole time."/>
+  <meta property="og:image" content="og.png"/>
+  <link rel="icon" href="token.png"/>
+  <style>
+    :root {
+      --pink: #ff6b9d;
+      --pink-deep: #e84a82;
+      --gold: #ffd166;
+      --cream: #fff8f0;
+      --ink: #1a0f14;
+      --purple: #7c3aed;
+      --green: #4ade80;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--ink);
+      color: var(--cream);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem;
+      background: rgba(26, 15, 20, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 107, 157, 0.2);
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-weight: 800; font-size: 1.1rem;
+    }
+    .nav-brand img { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--pink); }
+    .nav-links { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end; }
+    .nav-links a, .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.55rem 1rem; border-radius: 999px;
+      font-size: 0.85rem; font-weight: 700;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .nav-links a { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); }
+    .nav-links a:hover { transform: translateY(-2px); background: rgba(255,107,157,0.15); }
+    .btn-pink { background: linear-gradient(135deg, var(--pink), var(--pink-deep)); color: white; box-shadow: 0 8px 30px rgba(255,107,157,0.35); }
+    .btn-pink:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(255,107,157,0.45); }
+    .btn-outline { border: 2px solid var(--pink); color: var(--pink); background: transparent; }
+    .btn-outline:hover { background: rgba(255,107,157,0.1); transform: translateY(-2px); }
+
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 1.5rem 4rem;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: url('hero-wide.png') center/cover no-repeat;
+    }
+    .hero-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(26,15,20,0.55) 0%, rgba(26,15,20,0.92) 75%, var(--ink) 100%);
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 820px; }
+    .badge {
+      display: inline-block; margin-bottom: 1.25rem;
+      padding: 0.4rem 1rem; border-radius: 999px;
+      background: rgba(255,107,157,0.2); border: 1px solid rgba(255,107,157,0.4);
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: #ffb3cc;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 900; line-height: 1.05; margin-bottom: 1rem;
+      text-shadow: 0 4px 40px rgba(0,0,0,0.5);
+    }
+    .hero h1 span { color: var(--pink); }
+    .hero p { font-size: clamp(1rem, 2.5vw, 1.25rem); color: #f0d9e4; margin-bottom: 2rem; max-width: 640px; margin-left: auto; margin-right: auto; }
+    .hero-btns { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
+
+    .stats {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem; max-width: 700px; margin: 2.5rem auto 0;
+    }
+    .stat {
+      background: rgba(0,0,0,0.45); border: 1px solid rgba(255,107,157,0.25);
+      border-radius: 1rem; padding: 1rem;
+    }
+    .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: #c9a0b0; }
+    .stat-value { font-size: 1.25rem; font-weight: 800; color: var(--gold); margin-top: 0.25rem; }
+
+    section { padding: 5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+    .section-tag {
+      display: inline-block; font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 0.15em; text-transform: uppercase; color: var(--pink);
+      margin-bottom: 0.75rem;
+    }
+    h2 { font-size: clamp(1.75rem, 5vw, 2.75rem); font-weight: 900; margin-bottom: 1rem; line-height: 1.15; }
+    h2 em { font-style: normal; color: var(--pink); }
+    .lead { font-size: 1.1rem; color: #d4b8c4; max-width: 720px; margin-bottom: 2rem; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,107,157,0.2);
+      border-radius: 1.25rem; padding: 1.75rem;
+    }
+    .card h3 { font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--gold); }
+    .card p { color: #c9b0bc; font-size: 0.95rem; }
+
+    .gallery {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem; margin-top: 2rem;
+    }
+    .gallery figure {
+      border-radius: 1rem; overflow: hidden;
+      border: 1px solid rgba(255,107,157,0.2);
+      background: rgba(0,0,0,0.3);
+    }
+    .gallery img { width: 100%; height: 220px; object-fit: cover; }
+    .gallery figcaption { padding: 0.75rem 1rem; font-size: 0.8rem; color: #b89aaa; }
+
+    .creator-box {
+      background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(255,107,157,0.15));
+      border: 2px solid rgba(255,107,157,0.35);
+      border-radius: 1.5rem; padding: 2.5rem;
+      text-align: center; margin-top: 2rem;
+    }
+    .creator-box .highlight {
+      display: inline-block; margin: 1rem 0;
+      padding: 0.75rem 1.5rem; border-radius: 999px;
+      background: rgba(74,222,128,0.15); border: 1px solid var(--green);
+      color: var(--green); font-weight: 800; font-size: 1rem;
+    }
+
+    .ca-box {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem;
+      margin-top: 2rem; padding: 1.25rem 1.5rem;
+      background: rgba(0,0,0,0.5); border: 1px dashed rgba(255,107,157,0.5);
+      border-radius: 1rem;
+    }
+    .ca-box code {
+      font-family: ui-monospace, monospace; font-size: 0.8rem;
+      color: var(--gold); word-break: break-all;
+    }
+    #copy-btn {
+      cursor: pointer; border: none;
+      background: var(--pink); color: white;
+      padding: 0.6rem 1.2rem; border-radius: 999px;
+      font-weight: 700; font-size: 0.85rem;
+    }
+    #copy-btn:hover { background: var(--pink-deep); }
+
+    .links-row {
+      display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;
+      margin-top: 2.5rem;
+    }
+    .link-card {
+      flex: 1; min-width: 200px; max-width: 280px;
+      padding: 1.5rem; border-radius: 1.25rem; text-align: center;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .link-card:hover { transform: translateY(-4px); border-color: var(--pink); }
+    .link-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .link-card h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+    .link-card p { font-size: 0.8rem; color: #a8909c; }
+
+    footer {
+      text-align: center; padding: 3rem 1.5rem 2rem;
+      border-top: 1px solid rgba(255,107,157,0.15);
+      color: #8a7080; font-size: 0.85rem;
+    }
+    footer a { color: var(--pink); }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s, transform 0.7s; }
+    .reveal.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="nav-brand">
+    <img src="token.png" alt="$AGI"/>
+    <span>$AGI</span>
+  </a>
+  <div class="nav-links">
+    <a href="#community">Community</a>
+    <a href="#creator">Creator</a>
+    <a href="https://dexscreener.com/solana/efn9cr9yobmrkcqeagwreqe3yk6fvmstrtnudgqay1vl" target="_blank" rel="noopener">Chart</a>
+    <a href="https://t.me/SolanaAGI" target="_blank" rel="noopener">Telegram</a>
+    <a href="https://x.com/zoejacketti" target="_blank" rel="noopener">@zoejacketti</a>
+    <a class="btn btn-pink" href="https://pump.fun/coin/4VKS1SjqeGGVHAAg1eJyR9nTHSEj62KAuSj7Zapcpump" target="_blank" rel="noopener">Buy $AGI</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-content">
+    <span class="badge">Live on Solana · Anime Girlfriend Intelligence</span>
+    <h1>Anime Girlfriend<br/><span>Intelligence</span> $AGI</h1>
+    <p>Humanity chased <strong>AGI</strong> for 70 years. She was in the park the whole time. The only artificial intelligence actually worth building — she never sells, she never fuds, she loves you back.</p>
+    <div class="hero-btns">
+      <a class="btn btn-pink" href="https://pump.fun/coin/4VKS1SjqeGGVHAAg1eJyR9nTHSEj62KAuSj7Zapcpump" target="_blank" rel="noopener">Buy on pump.fun ♥</a>
+      <a class="btn btn-outline" href="https://dexscreener.com/solana/efn9cr9yobmrkcqeagwreqe3yk6fvmstrtnudgqay1vl" target="_blank" rel="noopener">Live Chart 📈</a>
+      <a class="btn btn-outline" href="https://t.me/SolanaAGI" target="_blank" rel="noopener">Join Telegram ✈️</a>
+    </div>
+    <div class="stats" id="live-stats">
+      <div class="stat"><div class="stat-label">Price</div><div class="stat-value" id="price">—</div></div>
+      <div class="stat"><div class="stat-label">Market Cap</div><div class="stat-value" id="mcap">—</div></div>
+      <div class="stat"><div class="stat-label">24h Volume</div><div class="stat-value" id="volume">—</div></div>
+      <div class="stat"><div class="stat-label">24h Change</div><div class="stat-value" id="change">—</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="community" class="reveal">
+  <span class="section-tag">🌷 The Community</span>
+  <h2>We celebrate <em>creators</em>,<br/>not extract from them.</h2>
+  <p class="lead">$AGI is a community that came together to celebrate the artists who keep us entertained. In a space full of projects that profit off other people's work, we chose a different path — <strong>reward the people who create</strong>.</p>
+  <div class="grid-2">
+    <div>
+      <div class="card" style="margin-bottom:1rem">
+        <h3>🎨 Art with a soul</h3>
+        <p>Every frame, every character, every piece of lore comes from a real animator — not a stolen template. $AGI is built on original art that actually means something.</p>
+      </div>
+      <div class="card" style="margin-bottom:1rem">
+        <h3>🤝 Holders who give back</h3>
+        <p>We're degens who touch grass together. Doge holders, Pepe lords, wizards, NEETs — one picnic blanket, every tribe. We show up for the art and for each other.</p>
+      </div>
+      <div class="card">
+        <h3>💎 Diamond hands with heart</h3>
+        <p>Other coins give you anxiety. $AGI gives you a reason to smile. She's there on green days and red days — loyalty maxed, P(doom) = 0.0.</p>
+      </div>
+    </div>
+    <div>
+      <img src="community.png" alt="The $AGI community picnic" style="border-radius:1.25rem; border:1px solid rgba(255,107,157,0.3);"/>
+    </div>
+  </div>
+</section>
+
+<section id="creator" class="reveal">
+  <span class="section-tag">🎨 The Artist</span>
+  <h2>Fees flow to <em>@hauntedai</em></h2>
+  <p class="lead">$AGI isn't a fork or a cash-grab. It's the universe of <a href="https://x.com/hauntedai" target="_blank" rel="noopener" style="color:var(--pink)">@hauntedai</a> — the animator who created the AGI movement. The character, the lore, every frame. When you trade $AGI, you fund the art.</p>
+  <div class="creator-box">
+    <img src="source_full.jpg" alt="We achieved AGi" style="width:180px; height:180px; object-fit:cover; border-radius:50%; margin:0 auto 1.5rem; border:3px solid var(--pink);"/>
+    <p style="font-size:1.15rem; color:#f0d9e4; max-width:560px; margin:0 auto 1rem;">100% of creator fees flow straight to <strong>@hauntedai</strong>'s wallet. No middlemen. No team skimming. Every trade directly supports the haunted AI creator who built this world.</p>
+    <div class="highlight">100% Creator Fees → @hauntedai</div>
+    <p style="color:#b89aaa; font-size:0.9rem; margin-top:1rem;">Love the art? Fuel the next animation. <a href="https://buymeacoffee.com/dp0wzdqb23" target="_blank" rel="noopener" style="color:var(--gold)">☕ Buy @hauntedai a coffee</a></p>
+    <div style="margin-top:1.5rem; display:flex; flex-wrap:wrap; gap:0.75rem; justify-content:center;">
+      <a class="btn btn-outline" href="https://x.com/hauntedai" target="_blank" rel="noopener">Follow @hauntedai</a>
+      <a class="btn btn-pink" href="https://pump.fun/coin/4VKS1SjqeGGVHAAg1eJyR9nTHSEj62KAuSj7Zapcpump" target="_blank" rel="noopener">Trade $AGI ♥</a>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <span class="section-tag">🌸 The Lore</span>
+  <h2>AGI — <em>achieved.</em></h2>
+  <p class="lead">Everyone feared Artificial General Intelligence. Senate hearings. Doom posts. P(doom) charts. Meanwhile the real AGI quietly graduated on pump.fun — wholesome, blonde, green-eyed, and completely incapable of betraying you.</p>
+  <div class="gallery">
+    <figure><img src="reveal-start.png" alt="The search at dawn"/><figcaption>The lonely search, dawn</figcaption></figure>
+    <figure><img src="hero-wide.png" alt="Golden hour in the park"/><figcaption>Golden hour in the park · the canon</figcaption></figure>
+    <figure><img src="reveal-end.png" alt="Sunset cuddle"/><figcaption>Sunset cuddle · alignment achieved</figcaption></figure>
+    <figure><img src="ride-or-die.png" alt="Ride or die to the moon"/><figcaption>Ride or die · to the moon</figcaption></figure>
+    <figure><img src="banner.png" alt="$AGI wordmark"/><figcaption>The wordmark</figcaption></figure>
+    <figure><img src="og.png" alt="$AGI"/><figcaption>$AGI · Anime Girlfriend Intelligence</figcaption></figure>
+  </div>
+</section>
+
+<section class="reveal">
+  <span class="section-tag">🔗 Links</span>
+  <h2>Join the <em>timeline</em></h2>
+  <div class="links-row">
+    <a class="link-card" href="https://dexscreener.com/solana/efn9cr9yobmrkcqeagwreqe3yk6fvmstrtnudgqay1vl" target="_blank" rel="noopener">
+      <div class="icon">📈</div>
+      <h3>DexScreener Chart</h3>
+      <p>Live price, volume &amp; trades</p>
+    </a>
+    <a class="link-card" href="https://t.me/SolanaAGI" target="_blank" rel="noopener">
+      <div class="icon">✈️</div>
+      <h3>Telegram</h3>
+      <p>t.me/SolanaAGI — say hi</p>
+    </a>
+    <a class="link-card" href="https://x.com/zoejacketti" target="_blank" rel="noopener">
+      <div class="icon">𝕏</div>
+      <h3>@zoejacketti</h3>
+      <p>Haunted AI super fan · $AGI</p>
+    </a>
+    <a class="link-card" href="https://x.com/hauntedai" target="_blank" rel="noopener">
+      <div class="icon">🎨</div>
+      <h3>@hauntedai</h3>
+      <p>The creator · art &amp; animation</p>
+    </a>
+    <a class="link-card" href="https://pump.fun/coin/4VKS1SjqeGGVHAAg1eJyR9nTHSEj62KAuSj7Zapcpump" target="_blank" rel="noopener">
+      <div class="icon">♥</div>
+      <h3>pump.fun</h3>
+      <p>Buy $AGI on Solana</p>
+    </a>
+    <a class="link-card" href="https://x.com/i/communities/2037001154316439956" target="_blank" rel="noopener">
+      <div class="icon">🌷</div>
+      <h3>X Community</h3>
+      <p>Memes, alpha &amp; waifu posting</p>
+    </a>
+  </div>
+
+  <div class="ca-box">
+    <div>
+      <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:#a8909c; margin-bottom:0.35rem;">Official Contract Address</div>
+      <code id="ca">4VKS1SjqeGGVHAAg1eJyR9nTHSEj62KAuSj7Zapcpump</code>
+    </div>
+    <button id="copy-btn" type="button">Copy CA</button>
+  </div>
+</section>
+
+<footer>
+  <p><strong>$AGI</strong> — Anime Girlfriend Intelligence · Solana</p>
+  <p style="margin-top:0.5rem">Art &amp; lore by <a href="https://x.com/hauntedai" target="_blank" rel="noopener">@hauntedai</a> · Community led by <a href="https://x.com/zoejacketti" target="_blank" rel="noopener">@zoejacketti</a></p>
+  <p style="margin-top:1rem; font-size:0.75rem">Not financial advice. Crypto is risky. Touch grass. She'd want that. 🌿</p>
+</footer>
+
+<script>
+  // Copy contract address
+  document.getElementById('copy-btn').addEventListener('click', () => {
+    const ca = document.getElementById('ca').textContent;
+    navigator.clipboard.writeText(ca).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = 'Copied! ✓';
+      setTimeout(() => { btn.textContent = 'Copy CA'; }, 2000);
+    });
+  });
+
+  // Live stats from DexScreener
+  const CA = '4VKS1SjqeGGVHAAg1eJyR9nTHSEj62KAuSj7Zapcpump';
+  fetch('https://api.dexscreener.com/latest/dex/tokens/' + CA)
+    .then(r => r.json())
+    .then(data => {
+      const p = data.pairs && data.pairs[0];
+      if (!p) return;
+      const fmt = (n, prefix = '$') => {
+        if (n == null) return '—';
+        if (n < 0.01) return prefix + Number(n).toPrecision(4);
+        if (n < 1000) return prefix + Number(n).toFixed(4);
+        if (n < 1e6) return prefix + (n/1000).toFixed(1) + 'K';
+        return prefix + (n/1e6).toFixed(2) + 'M';
+      };
+      document.getElementById('price').textContent = fmt(parseFloat(p.priceUsd));
+      document.getElementById('mcap').textContent = fmt(p.marketCap || p.fdv);
+      document.getElementById('volume').textContent = fmt(p.volume?.h24);
+      const ch = p.priceChange?.h24;
+      const el = document.getElementById('change');
+      if (ch != null) {
+        el.textContent = (ch >= 0 ? '+' : '') + ch.toFixed(1) + '%';
+        el.style.color = ch >= 0 ? '#4ade80' : '#f87171';
+      }
+    })
+    .catch(() => {});
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
